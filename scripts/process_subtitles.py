@@ -2,12 +2,21 @@
 from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
+import argparse
+
+# parse command line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument(dest='filename', help='name of the text file containing parsed subtitles')
+args = parser.parse_args()
+
+with open(args.filename) as f:
+    subtitles = f.read()
 
 # Instantiates a client
 client = language.LanguageServiceClient()
 
 # The text to analyze
-text = u'Hello, world!'
+text = subtitles
 document = types.Document(
     content=text,
     type=enums.Document.Type.PLAIN_TEXT)

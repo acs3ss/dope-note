@@ -10,9 +10,7 @@ def download_subtitles(video):
     url = "https://www.youtube.com/api/timedtext?lang=en&fmt=vtt&name=&v={0}".format(video_id)
     try:
         local_filename, headers = urllib.request.urlretrieve(url, "../downloads/" + video_id)
-        print(local_filename)
         file_size = os.path.getsize(local_filename)  # check if file is empty
-        print(file_size)
         if file_size == 0:
             raise ValueError("This video has no subtitles")
     except ValueError as err:
