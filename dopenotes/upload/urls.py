@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import login, logout
-from .views import *
+from . import views
 
 app_name = 'upload'
 urlpatterns = [
