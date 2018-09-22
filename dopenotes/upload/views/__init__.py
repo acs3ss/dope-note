@@ -5,7 +5,6 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
-from . import account, referee
 
 def home(request):
     return render(request, 'upload.html')
