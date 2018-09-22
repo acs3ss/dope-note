@@ -1,0 +1,24 @@
+{
+  "name": "dope-notes",
+  "version": "0.0.0",
+  "description": "Ramhacks 2018",
+  "main": "index.js",
+  "dependencies": {
+    "mongodb-stitch-browser-sdk": "^4.0.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "pack": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acs3ss/dope-notes.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acs3ss/dope-notes/issues"
+  },
+  "homepage": "https://github.com/acs3ss/dope-notes#readme"
+}
