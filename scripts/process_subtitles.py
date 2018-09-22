@@ -3,6 +3,7 @@ from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 import argparse
+import pprint
 
 # parse command line arguments
 parser = argparse.ArgumentParser()
@@ -22,7 +23,17 @@ document = types.Document(
     type=enums.Document.Type.PLAIN_TEXT)
 
 # Detects the sentiment of the text
-sentiment = client.analyze_sentiment(document=document).document_sentiment
+categories = client.classify_text(document=document).categories
+entities = client.analyze_entities(document=document).entities
 
-print('Text: {}'.format(text))
-print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
+for category in categories:
+    print(u'=' * 20)
+    print(u'{:<16}: {}'.format('name', category.name))
+    print(u'{:<16}: {}'.format('confidence', category.confidence))
+
+for entity in entities:
+    if entity.salience > 0.05:
+        pprint.pprint(entity)
+
+# print('Text: {}'.format(text))
+# print('Sentiment: {}, {}'.format(sentiment, sentiment.magnitude))
