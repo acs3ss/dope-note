@@ -1,10 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import *
 from .models import *
+from upload.models import *
 
+class VideoInline(admin.StackedInline):
+    model = Video
+    extra = 3
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'name', 'is_admin')
+    inlines = [VideoInline]
 
     def name(self, obj):
         return str(obj.user.first_name) + " " + str(obj.user.last_name)
