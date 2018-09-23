@@ -1,10 +1,25 @@
+input{
+	width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
 
-.box__dragndrop,
-.box__uploading,
-.box__success,
-.box__error {
-  display: none;
+h1 {
+	margin: 40px;
 }
-.btn-sm {
-	margin: .5em;
+
+body {
+  padding-top: 54px;
 }
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+
+.card {
+  height: 100%;
+}
+
