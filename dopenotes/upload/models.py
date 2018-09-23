@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Video
 class Video(models.Model):
     title = models.CharField(max_length=128)
@@ -11,11 +12,6 @@ class Video(models.Model):
     def __str__(self):
         return str(self.url)
 
-
-# Users
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    videos = models.ForeignKey(Video, on_delete=models.DO_NOTHING)
 
 class Class(models.Model):
     name = models.CharField(max_length=128)

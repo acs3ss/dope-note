@@ -1,3 +1,5 @@
-pip install google-cloud-language
+pip3 install google-cloud-language
 you-get
 export GOOGLE_APPLICATION_CREDENTIALS="../dope-notes-f54bbc11cc78.json"
+pip3 install python-rake
+pip3 install fuzzywuzzy[speedup]
