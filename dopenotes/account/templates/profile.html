@@ -32,6 +32,14 @@
                 {% endif %}
             </div>
         </div>
+        <div class="container">
+            {% for class in my_classes %}
+            My Videos
+            <h2>{{class.title}}</h1>
+            <h3>{{class.url}}</h1>
+            {% endfor %}
+        </div>
+
     </div>
 </div>
 {% endblock %}
