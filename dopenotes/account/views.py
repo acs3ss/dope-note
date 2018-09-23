@@ -1,25 +1,32 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm
 from .forms import RegistrationForm, EditProfileForm, EditUserProfileForm
 from .models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 def signup(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        if form.is_valid:
-            form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect("accounts:view-profile")
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return HttpResponseRedirect(reverse('account:view-profile', args={'user': user}))
     else:
         form = RegistrationForm()
         args = {'form': form}
         return render(request, 'signup.html', args)
 
 def view_profile(request):
-    args = {'user': request.user}
+    user = request.user.userprofile
+    my_classes = user.class_set.all()
+    my_videos = user.video_set.all()
+    args = {'user': request.user,
+            'my_classes': my_classes,
+            'my_videos': my_videos,
+            }
     return render(request, 'profile.html', args)
 
 def edit_profile(request):
@@ -35,11 +42,11 @@ def edit_profile(request):
             profile.address = data['address']
             profile.date_of_birth = data['date_of_birth']
             profile.save()
-            return redirect("accounts:view-profile")
+            return HttpResponseRedirect(reverse('account:view-profile', args={'user': request.user}))
     else:
         form = EditProfileForm(instance=request.user)
         form2 = EditUserProfileForm(instance=request.user.userprofile)
-        args = {'form': form, 'form2': form2}
+        args = {'user': request.user, 'form': form, 'form2': form2}
         return render(request, 'edit_profile.html', args)
 
 def change_password(request):
@@ -47,12 +54,11 @@ def change_password(request):
         form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect('/account/profile')
+            update_session_auth_hash(request, request.user)
+            return HttpResponseRedirect(reverse('account:view-profile', args={'user': request.user}))
         else:
-            return redirect('account/change_password')
+            return HttpResponseRedirect(reverse('account:change-password', args={'user': request.user}))
     else:
         form = PasswordChangeForm(user=request.user)
-        args = {'form': form}
+        args = {'user': request.user, 'form': form}
         return render(request, 'change_password.html', args)
-

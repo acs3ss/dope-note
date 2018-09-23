@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# input a url
+import argparse
 import json
 import re
 import urllib.parse, urllib.request
@@ -31,10 +33,20 @@ def download_subtitles(video):
     ytplayer_config = json.loads(re.search('ytplayer.config\s*=\s*([^\n]+?});', video_page).group(1))
     try:
         caption_tracks = json.loads(ytplayer_config['args']['player_response'])['captions']['playerCaptionsTracklistRenderer']['captionTracks']
+        filename = False
         for ct in caption_tracks:
-            urllib.request.urlretrieve(ct['baseUrl'], id + '_' + ct['languageCode'])
+            if ct['languageCode'] == 'en':
+                filename = id + '_' + ct['languageCode']
+                urllib.request.urlretrieve(ct['baseUrl'], filename)
+                break
+        if not filename:
+            filename = id + '_' + caption_tracks[0]['languageCode']
+            urllib.request.urlretrieve(caption_tracks[0]['baseUrl'], filename)
     except:
-        pass
+        return None
+
+    return filename
+
 
 def retrieve_id(url):
     # Adopted from you-get
@@ -47,5 +59,8 @@ def retrieve_id(url):
         except:
             return None
 
+parser = argparse.ArgumentParser()
+parser.add_argument(dest='url', help='YouTube url to extract subtitles from')
+args = parser.parse_args()
 
-download_subtitles("https://www.youtube.com/watch?v=9vJRopau0g0")
+print(download_subtitles(args.url))

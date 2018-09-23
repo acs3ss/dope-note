@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+	<h1>Join your classes</h1>
+	<h2>Join your classes to begin note-taking!</h2>
+	<br/>
+	<form method="POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button class="btn btn-primary btn-sm" type="submit">Submit</button>
+	</form>
+	<br/>
+	Class not listed? Create a class <a href="{% url 'upload:create-class' %}">here</a>.
+</div>
+{% endblock %}

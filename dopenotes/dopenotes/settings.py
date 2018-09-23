@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'dopenotes',
     'account.apps.AccountConfig',
     'upload.apps.UploadConfig',
     'django.contrib.admin',
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'account.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'dopenotes.urls'
@@ -124,7 +126,7 @@ LOGIN_URL = '/account/login/'
 
 LOGIN_REDIRECT_URL = '/account/profile/'
 
-HOME_URL = '/home/'
+HOME_URL = '/'
 
 LOGIN_EXEMPT_URLS = (
     r'^account/login/$',
@@ -135,6 +137,8 @@ LOGIN_EXEMPT_URLS = (
     r'^account/reset_password/complete/$',
     r'^account/reset_password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
     r'^home/',
+    r'^/$',
+    r'^$'
 )
 
 

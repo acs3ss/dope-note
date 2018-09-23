@@ -5,7 +5,8 @@ from . import views
 
 app_name = 'upload'
 urlpatterns = [
-    # Homepage
-    path('', views.home),
+    path('', views.index),
+    path('class/create', views.create_class, name='create-class'),
+    path('class/join', views.join_class, name='join-class'),
     url(r'^(?P<pk>\d+)/$', views.video_detail_view, name='detail')
 ]

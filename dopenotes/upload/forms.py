@@ -7,4 +7,20 @@ class UploadVideoForm(ModelForm):
 
     class Meta:
         model = Video
-        fields = ['url']
+        fields = ['url', 'clazz']
+
+class CreateClassForm(ModelForm):
+
+    class Meta:
+        model = Class
+        fields = ['name']
+
+class JoinClassForm(forms.Form):
+
+    def get_classes():
+        classes = []
+        for clazz in Class.objects.all():
+            classes.append((clazz.pk, str(clazz)))
+        return classes
+
+    classes = forms.MultipleChoiceField(choices=get_classes)

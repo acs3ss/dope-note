@@ -18,19 +18,25 @@
                 </ul>
             </div>
             <div class="mx-auto order-0">
-                <a class="navbar-brand mx-auto" href="/index">DopeNotes</a>
+                <a class="navbar-brand mx-auto" href="{% url 'home' %}">DopeNotes</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="/upload">Upload</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account:logout' %}">Sign Out</a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account:login' %}">Sign In</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
