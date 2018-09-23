@@ -20,8 +20,7 @@ def signup(request):
 
 def view_profile(request):
     user = request.user.userprofile
- #   my_classes = Class.objects.filter()
-    my_videos = [user.videos]
+    my_videos = user.video_set.all()
     args = {'user': user,
   #          'my_classes': my_classes,
             'my_videos': my_videos,
@@ -61,4 +60,3 @@ def change_password(request):
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
         return render(request, 'change_password.html', args)
-

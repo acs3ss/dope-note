@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# from account.models import *
 
 # Video
 class Video(models.Model):
@@ -9,6 +10,8 @@ class Video(models.Model):
     keywords = models.TextField(max_length=None)
     transcription = models.TextField(max_length=None)
     resources = models.TextField(max_length=None)
+    user = models.ForeignKey('account.UserProfile', on_delete=models.CASCADE, null=True)
+
 
     def __str__(self):
         return str(self.url)
