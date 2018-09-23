@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def signup(request):
     if request.method == 'POST':
@@ -38,11 +39,12 @@ def edit_profile(request):
             data = form2.cleaned_data
             profile = UserProfile.objects.get(user=request.user)
             profile.image = data['image']
-            profile.phone_number = data['phone_number']
-            profile.address = data['address']
+ #           profile.phone_number = data['phone_number']
+ #           profile.address = data['address']
             profile.date_of_birth = data['date_of_birth']
             profile.save()
-            return HttpResponseRedirect(reverse('account:view-profile', args={'user': request.user}))
+            #return HttpResponseRedirect(reverse('account:view-profile', args={'user': request.user}))
+            return HttpResponseRedirect(reverse('account:view-profile'))
     else:
         form = EditProfileForm(instance=request.user)
         form2 = EditUserProfileForm(instance=request.user.userprofile)
