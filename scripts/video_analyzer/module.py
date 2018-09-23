@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import requests
+from bs4 import BeautifulSoup
 import subprocess
 import json
 import re
@@ -40,9 +42,15 @@ def download_subtitles(video):
     ytplayer_config = json.loads(re.search('ytplayer.config\s*=\s*([^\n]+?});', video_page).group(1))
     try:
         caption_tracks = json.loads(ytplayer_config['args']['player_response'])['captions']['playerCaptionsTracklistRenderer']['captionTracks']
+        filename = False
         for ct in caption_tracks:
-            filename = "../downloads/" + id + '_' + ct['languageCode']
-            urllib.request.urlretrieve(ct['baseUrl'], filename)
+            if ct['languageCode'] == 'en':
+                filename = "../downloads/" + id + '_' + ct['languageCode']
+                urllib.request.urlretrieve(ct['baseUrl'], filename)
+                break
+        if not filename:
+            filename = "../downloads/" + id + '_' + caption_tracks[0]['languageCode']
+            urllib.request.urlretrieve(caption_tracks[0]['baseUrl'], filename)
     except:
         return None
 
@@ -59,6 +67,12 @@ def retrieve_id(url):
             return urllib.parse.parse_qs(urllib.parse.urlparse(url).query)['v'][0]
         except:
             return None
+
+
+def get_video_title(url):
+    req = requests.get(args.url)
+    soup = BeautifulSoup(req.text, "lxml")
+    return soup.title.string
 
 
 def parse_xml(filename):
