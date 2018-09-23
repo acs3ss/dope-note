@@ -4,7 +4,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
+from upload.forms import *
 
 
 def home(request):
-    return render(request, 'upload.html')
+    if request.method == 'POST':
+        form = UploadVideoForm(request.POST)
+        if form.is_valid:
+            form.save()
+        return HttpResponse("Good job!")
+    else:
+        form = UploadVideoForm()
+        args = {'form': form}
+        return render(request, 'upload_form.html', args)
