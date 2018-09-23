@@ -12,6 +12,8 @@ from upload.forms import *
 
 from video_analyzer.call_me import get_video_info
 
+import json
+
 def index(request):
     if request.method == 'POST':
         form = UploadVideoForm(request.POST, error_class=DivErrorList)

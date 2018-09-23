@@ -136,8 +136,8 @@ def get_resources(phrase, urls):
     '''
     related_links = []
     for url in urls:
-        # bash_command = "ddgr -r 'us-en' --json -n 1 -w " + url + ' "' + phrase + '"'
-        bash_command = "googler -l 'en' --json -n 1 -w " + url + ' "' + phrase + '"'
+        bash_command = "ddgr -r 'us-en' --json -n 1 -w " + url + ' "' + phrase + '"'
+        # bash_command = "googler -l 'en' --json -n 1 -w " + url + ' "' + phrase + '"'
         print(bash_command)
         process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
         output, error = process.communicate()
@@ -145,7 +145,7 @@ def get_resources(phrase, urls):
     return related_links
 
 
-def get_video_info(url, num_keywords=55555, stoplist="SmartStopList.txt", resources="resources.txt"):
+def get_video_info(url, num_keywords=5, stoplist="SmartStopList.txt", resources="resources.txt"):
     dependencies = [
         'you-get>=0.4.1099',
         'python-rake>=1.4.5'
@@ -176,8 +176,8 @@ def get_video_info(url, num_keywords=55555, stoplist="SmartStopList.txt", resour
     data = {}
     data['title'] = title
     data['resources'] = links
-    data['transcript'] = transcript
+    data['transcription'] = transcript
     data['keywords'] = [keyword[0] for keyword in keywords]
-    json_data = json.dumps(data)
+    # json_data = json.dumps(data)
 
-    return(json_data)
+    return(data)
