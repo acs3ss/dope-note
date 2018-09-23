@@ -18,7 +18,7 @@ def index(request):
     if request.method == 'POST':
         form = UploadVideoForm(request.POST, error_class=DivErrorList)
         if form.is_valid():
-            video = Video(url=form.cleaned_data['url'], user=request.user.userprofile)
+            video = Video(url=form.cleaned_data['url'], clazz=Class.objects.get(name=form.cleaned_data['clazz']), user=request.user.userprofile)
             info = get_video_info(str(video.url))
             video.keywords = info['keywords']
             video.title = info['title']
