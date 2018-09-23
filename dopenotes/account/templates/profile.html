@@ -9,10 +9,10 @@
 {% block body %}
 <div class="container">
     <h1>Account</h1>
-    <a href="{% url 'edit-profile' %}" class="btn btn-outline-primary btn-sm">Edit</a>
+    <a href="{% url 'account:edit-profile' %}" class="btn btn-outline-primary btn-sm">Edit</a>
     <a href="/accounts/change_password" class="btn btn-outline-primary btn-sm">Change Password</a>
     <a href="/accounts/reset_password" class="btn btn-outline-primary btn-sm">Reset Password</a>
-    <a href="{% url 'logout' %}" class="btn btn-outline-primary btn-sm">Logout</a>
+    <a href="{% url 'account:logout' %}" class="btn btn-outline-primary btn-sm">Logout</a>
     <div style="margin-top: 20px">
         <div class="row">
             <div class="col-2">
