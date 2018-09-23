@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load account_extras %}
+
 {% block head %}
 
 <title>Profile</title>
@@ -37,7 +39,7 @@
             {% for video in my_videos %}
             <h2>{{video.title}}</h2>
             <h3>{{video.url}}</h3>
-            <iframe width="420" height="315" src="{{video.url}}"></iframe>
+            <iframe width="420" height="315" src="{% watch_to_embed video.url %}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             {% endfor %}
         </div>
         <div class="container">
