@@ -14,3 +14,6 @@ class CreateClassForm(ModelForm):
     class Meta:
         model = Class
         fields = ['name']
+
+class JoinClassForm(forms.Form):
+    classes = forms.MultipleChoiceField(choices=())

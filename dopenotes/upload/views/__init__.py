@@ -31,18 +31,31 @@ def video_detail_view(request, pk=None):
 
 
 # Create Class
-def add_class(request):
+def create_class(request):
     if request.method == 'POST':
         form = CreateClassForm(request.POST)
         if form.is_valid():
             clazz = form.save()
             clazz.students.add(request.user.userprofile)
             return HttpResponseRedirect(reverse('account:view-profile'))
-        return render(request, 'add_class_form.html', {'form': form})
+        return render(request, 'create_class_form.html', {'form': form})
     else:
         form = CreateClassForm()
         args = {'form': form}
-        return render(request, 'add_class_form.html', args)
+        return render(request, 'create_class_form.html', args)
+
+def join_class(request):
+    if request.method == 'POST':
+        form = JoinClassForm(request.POST)
+        if form.is_valid():
+            clazz = form.save()
+            clazz.students.add(request.user.userprofile)
+            return HttpResponseRedirect(reverse('account:view-profile'))
+        return render(request, 'join_class_form.html', {'form': form})
+    else:
+        form = JoinClassForm({'classes': tuple(request.user.userprofile.class_set.all())})
+        args = {'form': form}
+        return render(request, 'join_class_form.html', args)
 
 class DivErrorList(ErrorList):
     def __str__(self):
