@@ -119,7 +119,7 @@ def get_keywords(filename, num_keywords, stoplist):
         urlified = re.sub(" ", "_", phrase)
         url = "https://en.wikipedia.org/wiki/" + urlified  # convert to Wikipedia url
         url_dict[url] = (phrase, relevance)  # add to dict to allow phrase to later be identified by URL
-        request = requests.get('http://www.example.com')
+        request = requests.get(url)
         if request.status_code == 200:
             keywords.append((phrase, relevance))
 
@@ -169,13 +169,13 @@ def get_video_info(url, num_keywords=5, stoplist="SmartStopList.txt", resources=
     transcript = parse_xml(xml_filename)
     keywords = get_keywords(transcript, num_keywords, stoplist)
 
-    # links = [get_resources(phrase[0], wanted_resources) for phrase in keywords]
+    links = [get_resources(phrase[0], wanted_resources) for phrase in keywords]
 
     os.remove(xml_filename)
 
     data = {}
     data['title'] = title
-    # data['resources'] = links
+    data['resources'] = links
     data['transcription'] = transcript
     data['keywords'] = [keyword[0] for keyword in keywords]
     # json_data = json.dumps(data)
