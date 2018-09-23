@@ -10,7 +10,7 @@ from django.urls import reverse
 
 from upload.forms import *
 
-def home(request):
+def index(request):
     if request.method == 'POST':
         form = UploadVideoForm(request.POST, error_class=DivErrorList)
         if form.is_valid():
