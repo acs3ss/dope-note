@@ -54,12 +54,14 @@ def join_class(request):
     if request.method == 'POST':
         form = JoinClassForm(request.POST)
         if form.is_valid():
-            clazz = form.save()
-            clazz.students.add(request.user.userprofile)
+            classes = form.cleaned_data['classes']
+            for clazz in classes:
+                clazz = Class.objects.get(pk=int(clazz))
+                clazz.students.add(request.user.userprofile)
             return HttpResponseRedirect(reverse('account:view-profile'))
         return render(request, 'join_class_form.html', {'form': form})
     else:
-        form = JoinClassForm({'classes': tuple(request.user.userprofile.class_set.all())})
+        form = JoinClassForm()
         args = {'form': form}
         return render(request, 'join_class_form.html', args)
 

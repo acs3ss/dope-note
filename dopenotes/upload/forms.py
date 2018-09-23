@@ -16,4 +16,11 @@ class CreateClassForm(ModelForm):
         fields = ['name']
 
 class JoinClassForm(forms.Form):
-    classes = forms.MultipleChoiceField(choices=())
+
+    def get_classes():
+        classes = []
+        for clazz in Class.objects.all():
+            classes.append((clazz.pk, str(clazz)))
+        return classes
+
+    classes = forms.MultipleChoiceField(choices=get_classes)
