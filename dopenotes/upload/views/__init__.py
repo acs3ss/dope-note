@@ -10,14 +10,20 @@ from django.urls import reverse
 
 from upload.forms import *
 
+import sys
+sys.path.append('../../../scripts')
+from scripts.call_me import get_video_info
+
 def index(request):
     if request.method == 'POST':
         form = UploadVideoForm(request.POST, error_class=DivErrorList)
         if form.is_valid():
-#            some_function(str(form.url))
-            user = request.user
-            video = form.save()
-            user.save()
+            video = Video(url=form.cleaned_data['url'], user=request.user.userprofile)
+            info = get_video_info(str(form.url))
+            video.keywords = info['keywords']
+            video.title = info['title']
+            video.transcription = info['transcription']
+            video.resources = json.dumps(info['resources'])
             return HttpResponseRedirect(reverse('upload:detail', args=(video.pk,)))
         return render(request, 'upload_form.html', {'form': form})
     else:

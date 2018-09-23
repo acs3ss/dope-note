@@ -11,9 +11,13 @@ class UserProfileManager(models.Manager):
 
 # Users
 class UserProfile(models.Model):
+
+    def __str__(self):
+        return self.user.first_name + " " + self.user.last_name
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_of_birth = models.DateField(null=True, blank=True)
-    videos = models.ForeignKey(Video, on_delete=models.DO_NOTHING, null=True, related_name='videos')
+    # videos = models.ForeignKey(Video, on_delete=models.DO_NOTHING, null=True, related_name='videos')
     is_admin = models.BooleanField(default=False)
     image = models.ImageField(upload_to='profile_image', blank=True, null=True)
 

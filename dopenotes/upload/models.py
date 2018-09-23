@@ -1,13 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# from account.models import *
 
 # Video
 class Video(models.Model):
     title = models.CharField(max_length=128)
     url = models.URLField('URL', max_length=2048, unique=True)
-    text = models.TextField(max_length=None)
-    extra_content = models.TextField(max_length=None)
+    keywords = models.TextField(max_length=None)
+    transcription = models.TextField(max_length=None)
+    resources = models.TextField(max_length=None)
+    user = models.ForeignKey('account.UserProfile', on_delete=models.CASCADE, null=True)
+
 
     def __str__(self):
         return str(self.url)
