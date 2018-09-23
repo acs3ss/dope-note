@@ -141,11 +141,11 @@ def get_resources(phrase, urls):
         print(bash_command)
         process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
         output, error = process.communicate()
-        related_links.append(output[0])
+        related_links.append(output)
     return related_links
 
 
-def get_video_info(url, num_keywords=10, stoplist="SmartStopList.txt", resources="resources.txt"):
+def get_video_info(url, num_keywords=55555, stoplist="SmartStopList.txt", resources="resources.txt"):
     dependencies = [
         'you-get>=0.4.1099',
         'python-rake>=1.4.5'
@@ -169,13 +169,13 @@ def get_video_info(url, num_keywords=10, stoplist="SmartStopList.txt", resources
     transcript = parse_xml(xml_filename)
     keywords = get_keywords(transcript, num_keywords, stoplist)
 
-    links = [(phrase[0], get_resources(phrase[0], wanted_resources)) for phrase in keywords]
+    links = [get_resources(phrase[0], wanted_resources) for phrase in keywords]
 
     os.remove(xml_filename)
 
     data = {}
     data['title'] = title
-    dopen(args.resources).read().splitlines()  # parse resources file into listata['resources'] = links
+    data['resources'] = links
     data['transcript'] = transcript
     data['keywords'] = [keyword[0] for keyword in keywords]
     json_data = json.dumps(data)
