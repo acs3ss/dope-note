@@ -4,13 +4,13 @@
 <div class="container">
 	<h1>Add Lecture Link</h1>
 	<h2>Paste the link to your video lecture here.</h2>
-	<br>
+	<br/>
 	<form method="POST">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<button class="btn btn-primary btn-sm" type="submit">Submit</button>
 	</form>
-	</br>
+	<br/>
 	<form class="box" method="post" action="" enctype="multipart/form-data">
 		<div class="box__input">
 			<input class="box__file" type="file" name="files[]" id="file" data-multiple-caption="{count} files selected" multiple />
