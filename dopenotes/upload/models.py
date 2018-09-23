@@ -13,7 +13,7 @@ class Video(models.Model):
     extra_content = models.TextField(null=True, max_length=None)
 
     def __str__(self):
-        return str(self.url)
+        return str(self.title)
 
 
 class Class(models.Model):
