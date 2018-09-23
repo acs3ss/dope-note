@@ -23,8 +23,9 @@ def index(request):
             video.keywords = info['keywords']
             video.title = info['title']
             video.transcription = info['transcription']
-            video.resources = json.dumps(info['resources'])
-            return HttpResponseRedirect(reverse('upload:detail', args=(video.pk,)))
+            # video.resources = json.dumps(info['resources'])
+            video.save()
+            return HttpResponseRedirect(reverse('upload:detail', args={'pk': video.pk}))
         return render(request, 'upload_form.html', {'form': form})
     else:
         form = UploadVideoForm(error_class=DivErrorList)

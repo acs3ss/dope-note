@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load account_extras %}
+
 {% block head %}
 
 <title>Profile</title>
@@ -36,17 +38,17 @@
             <p>My Videos</p>
             {% for video in my_videos %}
             <h2>{{video.title}}</h2>
-            <h3>{{video.url}}</h3>
-            <iframe width="420" height="315" src="{{video.url}}"></iframe>
+            <iframe width="420" height="315" src="{% watch_to_embed video.url %}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <br/><br/>
             {% endfor %}
         </div>
         <div class="container">
-                <p>My Classes</p>
-                {% for class in my_classes %}
-                <h2>{{class.name}}</h2>
-                {% endfor %}
-                <a class="btn btn-primary" href="{% url 'upload:join-class' %}">Join classes</a>
-            </div>
+            <p>My Classes</p>
+            {% for class in my_classes %}
+            <h2>{{class.name}}</h2>
+            {% endfor %}
+            <a class="btn btn-primary" href="{% url 'upload:join-class' %}">Join classes</a>
+        </div>
     </div>
 </div>
 {% endblock %}
