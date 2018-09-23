@@ -119,7 +119,8 @@ def get_keywords(filename, num_keywords, stoplist):
         url = "https://en.wikipedia.org/wiki/" + urlified
         url_dict[url] = (phrase, freq)
         req = requests.get(url)
-        if req.status_code == "200":
+        print(req.status_code, req.url)
+        if req.status_code == 200:
             keywords.append(url_dict[url])
 
     keywords.sort(key=lambda entry: entry[1], reverse=True)  # sort by descending relevance
@@ -163,6 +164,8 @@ def get_video_info(url, num_keywords=3, stoplist="SmartStopList.txt", resources=
 
     wanted_resources = open(resources).read().splitlines()  # parse resources file into list
 
+    print("WANTED:", wanted_resources)
+
     try:
         xml_filename = download_subtitles(url)
         if not xml_filename:
@@ -172,16 +175,22 @@ def get_video_info(url, num_keywords=3, stoplist="SmartStopList.txt", resources=
         exit(1)
 
     title = get_video_title(url)
+    print("GOT TITLE")
     transcript = parse_xml(xml_filename)
+    print("GOT TRANSCRIPT")
     keywords = get_keywords(transcript, num_keywords, stoplist)
 
-    links = {'phrases': [get_resources(phrase, urls) for phrase in keywords]}
+    print("KEYWORDS", keywords)
 
+    links = {'phrases': [get_resources(phrase) for phrase in keywords]}
+    
+    print("LINKS:", links)
+    
     os.remove(xml_filename)
 
     data = {}
     data['title'] = title
-    data['resources'] = links
+    data['resources'] = str(links)
     data['transcription'] = transcript
     data['keywords'] = [keyword[0] for keyword in keywords]
     # json_data = json.dumps(data)
