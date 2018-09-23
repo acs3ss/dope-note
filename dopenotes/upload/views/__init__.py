@@ -14,7 +14,8 @@ def index(request):
     if request.method == 'POST':
         form = UploadVideoForm(request.POST, error_class=DivErrorList)
         if form.is_valid():
-            video = form.save()
+            video = Video(url=form.cleaned_data['url'], user=request.user.userprofile)
+            video.save()
             return HttpResponseRedirect(reverse('upload:detail', args=(video.pk,)))
         return render(request, 'upload_form.html', {'form': form})
     else:
