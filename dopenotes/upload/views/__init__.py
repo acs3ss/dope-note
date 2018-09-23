@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Password
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import TemplateView
 from django.urls import reverse
 
@@ -22,7 +22,22 @@ def home(request):
         args = {'form': form}
         return render(request, 'upload_form.html', args)
 
+
 def video_detail_view(request, url=None):
     obj = get_object_or_404(Video, url=url)
     args = {'url': obj}
     return render(request, 'detail_view.html', args)
+
+
+# Create Class
+def add_class(request):
+    if request.method == 'POST':
+        form = CreateClassForm(request.POST)
+        if form.is_valid():
+            c = form.save()
+            return HttpResponse("Good job!")
+        return render(request, 'add_class_form.html', {'form': form})
+    else:
+        form = CreateClassForm()
+        args = {'form': form}
+        return render(request, 'add_class_form.html', args)

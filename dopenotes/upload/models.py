@@ -15,4 +15,4 @@ class Video(models.Model):
 
 class Class(models.Model):
     name = models.CharField(max_length=128)
-    students = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    students = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
