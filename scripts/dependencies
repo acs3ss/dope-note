@@ -1,0 +1,3 @@
+pip install google-cloud-language
+you-get
+export GOOGLE_APPLICATION_CREDENTIALS="../dope-notes-f54bbc11cc78.json"
