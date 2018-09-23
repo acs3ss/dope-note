@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# input a url
+
 import json
 import re
 import urllib.parse, urllib.request
@@ -47,5 +49,8 @@ def retrieve_id(url):
         except:
             return None
 
+parser = argparse.ArgumentParser()
+parser.add_argument(dest='url', help='YouTube url to extract subtitles from')
+args = parser.parse_args()
 
-download_subtitles("https://www.youtube.com/watch?v=9vJRopau0g0")
+download_subtitles(args.url)
