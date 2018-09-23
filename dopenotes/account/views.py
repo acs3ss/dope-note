@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm
 from .forms import RegistrationForm, EditProfileForm, EditUserProfileForm
