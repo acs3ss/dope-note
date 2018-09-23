@@ -6,8 +6,9 @@ from django.contrib.auth.models import User
 class Video(models.Model):
     title = models.CharField(max_length=128)
     url = models.URLField('URL', max_length=2048, unique=True)
-    text = models.TextField(max_length=None)
-    extra_content = models.TextField(max_length=None)
+    keywords = models.TextField(max_length=None)
+    transcription = models.TextField(max_length=None)
+    resources = models.TextField(max_length=None)
 
     def __str__(self):
         return str(self.url)
