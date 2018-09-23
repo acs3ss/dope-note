@@ -1,8 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import json
+import argparse
 import re
 import urllib.parse, urllib.request
+import os
 
 def download_subtitles(video):
     id = retrieve_id(video)
@@ -32,9 +34,13 @@ def download_subtitles(video):
     try:
         caption_tracks = json.loads(ytplayer_config['args']['player_response'])['captions']['playerCaptionsTracklistRenderer']['captionTracks']
         for ct in caption_tracks:
-            urllib.request.urlretrieve(ct['baseUrl'], id + '_' + ct['languageCode'])
+            filename = "../downloads/" + id + '_' + ct['languageCode']
+            urllib.request.urlretrieve(ct['baseUrl'], filename)
     except:
         pass
+
+    return filename
+
 
 def retrieve_id(url):
     # Adopted from you-get
@@ -48,4 +54,28 @@ def retrieve_id(url):
             return None
 
 
-download_subtitles("https://www.youtube.com/watch?v=9vJRopau0g0")
+def getText(filename):
+    to_ignore = re.compile(r"\d|$")
+    to_remove = re.compile(r"<.*?>")
+    with open(filename) as f:
+        content = []
+        for line in f:
+            if to_ignore.match(line):
+                continue  # ignore line if blank, time, or index
+
+            stripped = re.sub(to_remove, "", line)  # replace all font coloring, bolding, etc
+            stripped = stripped.strip()
+            content.append(stripped)
+    return " ".join(content)
+
+
+# parse command line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument(dest='url', help='url of the video to be analyzed')
+args = parser.parse_args()
+
+filename = download_subtitles(args.url)
+
+paragraph = getText(filename)
+
+print(paragraph)
