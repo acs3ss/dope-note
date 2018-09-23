@@ -18,13 +18,27 @@ parser = argparse.ArgumentParser()
 parser.add_argument(dest='url', help='YouTube video to be parsed')
 parser.add_argument('-n', dest='num_keywords', type=int, default=10, help='number of keywords to extract')
 parser.add_argument('--stoplist', dest='stoplist', default="SmartStopList.txt", help='path to stoplist of common words to be excluded')
+parser.add_argument('--resources', dest='resources', default="resources.txt", help='path to list of  resources to search')
 args = parser.parse_args()
 
-xml_filename = download_subtitles(args.url)
-data = parse_xml(xml_filename)
-keywords = get_keywords(data, args.num_keywords, args.stoplist)
+wanted_resources = open(args.resources).read().splitlines()  # parse resources file into list
+
+try:
+    xml_filename = download_subtitles(args.url)
+    if not xml_filename:
+        raise ValueError('This video does not have subtitles')
+except ValueError as err:
+    print(err.args)
+    exit(1)
+
+
+
+transcript = parse_xml(xml_filename)
+keywords = get_keywords(transcript, args.num_keywords, args.stoplist)
+
+resources = [(phrase[0], get_resources(phrase[0], wanted_resources)) for phrase in keywords]
 
 os.remove(xml_filename)
 
-print(keywords)
+print(resources)
 

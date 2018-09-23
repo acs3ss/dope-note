@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import subprocess
 import json
 import re
 import urllib.parse, urllib.request
@@ -43,7 +44,7 @@ def download_subtitles(video):
             filename = "../downloads/" + id + '_' + ct['languageCode']
             urllib.request.urlretrieve(ct['baseUrl'], filename)
     except:
-        pass
+        return None
 
     return filename
 
@@ -132,3 +133,19 @@ def get_keywords(filename, num_keywords, stoplist):
     keywords = keywords[:num_keywords]  # we may have added more than we needed due to batching. Keep only how many we wanted
     
     return keywords
+
+
+def get_resources(phrase, urls):
+    ''' @param phrase: phrase to be searched for
+        @param urls: websites to search for the phrase
+        @return: json objects from top ddgr search results
+    '''
+    related_links = []
+    for url in urls:
+        bash_command = "ddgr -r 'us-en' --json -n 1 -w " + url + ' "' + phrase + '"'
+        print(bash_command)
+        process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
+        output, error = process.communicate()
+        related_links.append(output[0])
+    return related_links
+
