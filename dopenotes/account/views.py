@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm
 from .forms import RegistrationForm, EditProfileForm, EditUserProfileForm
@@ -9,10 +10,10 @@ from django.contrib.auth.decorators import login_required
 def signup(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        if form.is_valid:
-            form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect("accounts:view-profile")
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect("account:view-profile")
     else:
         form = RegistrationForm()
         args = {'form': form}
