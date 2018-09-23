@@ -41,7 +41,7 @@ def edit_profile(request):
             profile.address = data['address']
             profile.date_of_birth = data['date_of_birth']
             profile.save()
-            return redirect("accounts:view-profile")
+            return redirect("account:view-profile")
     else:
         form = EditProfileForm(instance=request.user)
         form2 = EditUserProfileForm(instance=request.user.userprofile)
