@@ -17,4 +17,7 @@ class Video(models.Model):
 
 class Class(models.Model):
     name = models.CharField(max_length=128)
-    students = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    students = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, related_name='students')
+
+    def __str__(self):
+        return str(self.name)
