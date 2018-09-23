@@ -15,7 +15,8 @@ def home(request):
         form = UploadVideoForm(request.POST)
         if form.is_valid():
             form.save()
-        return HttpResponseRedirect(reverse('upload:detail', args=(form.cleaned_data['url'],)))
+            return HttpResponseRedirect(reverse('upload:detail', args=(form.cleaned_data['url'],)))
+        return render(request, 'upload_form.html', {'form': form})
     else:
         form = UploadVideoForm()
         args = {'form': form}
