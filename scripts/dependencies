@@ -3,3 +3,4 @@
 # pip3 install fuzzywuzzy[speedup]
 you-get
 pip3 install python-rake
+ddgr

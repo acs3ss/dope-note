@@ -3,7 +3,7 @@ import os
 import argparse
 import pkg_resources
 from pkg_resources import DistributionNotFound, VersionConflict
-
+import json
 
 dependencies = [
     'you-get>=0.4.1099',
@@ -32,13 +32,17 @@ except ValueError as err:
     exit(1)
 
 
-
 transcript = parse_xml(xml_filename)
 keywords = get_keywords(transcript, args.num_keywords, args.stoplist)
 
-resources = [(phrase[0], get_resources(phrase[0], wanted_resources)) for phrase in keywords]
+# resources = [(phrase[0], get_resources(phrase[0], wanted_resources)) for phrase in keywords]
 
 os.remove(xml_filename)
 
-print(resources)
+data = {}
+data['resources'] = resources
+data['transcript'] = transcript
+data['keywords'] = [keyword[0] for keyword in keywords]
+json_data = json.dumps(data)
 
+print(json_data)
