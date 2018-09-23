@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Video
 class Video(models.Model):
     title = models.CharField(max_length=128)
-    url = models.CharField('URL', max_length=2048, unique=True)
+    url = models.URLField('URL', max_length=2048, unique=True)
     text = models.TextField(max_length=None)
     extra_content = models.TextField(max_length=None)
 
