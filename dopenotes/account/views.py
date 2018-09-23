@@ -20,9 +20,10 @@ def signup(request):
 
 def view_profile(request):
     user = request.user.userprofile
+    my_classes = user.class_set.all()
     my_videos = user.video_set.all()
     args = {'user': user,
-  #          'my_classes': my_classes,
+            'my_classes': my_classes,
             'my_videos': my_videos,
             }
     return render(request, 'profile.html', args)

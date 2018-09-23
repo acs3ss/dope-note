@@ -35,8 +35,9 @@ def add_class(request):
     if request.method == 'POST':
         form = CreateClassForm(request.POST)
         if form.is_valid():
-            c = form.save()
-            return HttpResponse("Good job!")
+            clazz = form.save()
+            clazz.students.add(request.user.userprofile)
+            return HttpResponseRedirect(reverse('account:view-profile'))
         return render(request, 'add_class_form.html', {'form': form})
     else:
         form = CreateClassForm()

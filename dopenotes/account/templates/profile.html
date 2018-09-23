@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="container">
-            My Videos
+            <p>My Videos</p>
             {% for video in my_videos %}
             <h2>{{video.title}}</h2>
             <h3>{{video.url}}</h3>
@@ -41,10 +41,11 @@
             {% endfor %}
         </div>
         <div class="container">
-                My Classes
+                <p>My Classes</p>
                 {% for class in my_classes %}
                 <h2>{{class.name}}</h2>
                 {% endfor %}
+                <a class="btn btn-primary" href="{% url 'upload:add-class' %}">Add class</a>
             </div>
     </div>
 </div>

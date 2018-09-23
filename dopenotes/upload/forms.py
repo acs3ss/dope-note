@@ -7,7 +7,7 @@ class UploadVideoForm(ModelForm):
 
     class Meta:
         model = Video
-        fields = ['url']
+        fields = ['url', 'clazz']
 
 class CreateClassForm(ModelForm):
 
