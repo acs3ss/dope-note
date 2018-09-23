@@ -33,7 +33,7 @@ def view_profile(request):
 def edit_profile(request):
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
-        form2 = EditUserProfileForm(request.POST, instance=request.user.userprofile)
+        form2 = EditUserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
         if form.is_valid() and form2.is_valid():
             form.save()
             data = form2.cleaned_data
