@@ -19,10 +19,12 @@ def signup(request):
         return render(request, 'signup.html', args)
 
 def view_profile(request):
-    user = request.user
-    my_classes = [user.userprofile.videos]
+    user = request.user.userprofile
+ #   my_classes = Class.objects.filter()
+    my_videos = [user.videos]
     args = {'user': user,
-            'my_classes': my_classes,
+  #          'my_classes': my_classes,
+            'my_videos': my_videos,
             }
     return render(request, 'profile.html', args)
 
