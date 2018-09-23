@@ -2,24 +2,15 @@
 
 {% block body %}
 <div class="container">
-	<h1>Add Lecture Link</h1>
-	<h2>Paste the link to your video lecture here.</h2>
-	<br/>
+	<h1>Link Your Lecture!</h1>
+	<h4>Paste the YouTube link to your video lecture here.</h4>
+	<br>
+	<!-- Search form -->
 	<form method="POST">
 		{% csrf_token %}
 		{{ form.as_p }}
-		<button class="btn btn-primary btn-sm" type="submit">Submit</button>
+		<button class="btn btn-primary btn-sm" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Transcribing...">Upload</button>
 	</form>
 	<br/>
-	<form class="box" method="post" action="" enctype="multipart/form-data">
-		<div class="box__input">
-			<input class="box__file" type="file" name="files[]" id="file" data-multiple-caption="{count} files selected" multiple />
-			<label for="file"><strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.</label>
-			<button class="box__button" type="submit">Upload</button>
-		</div>
-		<div class="box__uploading">Uploading&hellip;</div>
-		<div class="box__success">Done!</div>
-		<div class="box__error">Error! <span></span>.</div>
-	</form>
 </div>
 {% endblock %}
