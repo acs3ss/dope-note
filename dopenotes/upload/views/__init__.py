@@ -23,8 +23,8 @@ def index(request):
         return render(request, 'upload_form.html', args)
 
 
-def video_detail_view(request, url=None):
-    obj = get_object_or_404(Video, url=url)
+def video_detail_view(request, pk=None):
+    obj = get_object_or_404(Video, pk=pk)
     args = {'url': obj}
     return render(request, 'detail_view.html', args)
 
