@@ -2,12 +2,17 @@ import RAKE
 import re
 from tornado import ioloop, httpclient
 import argparse
+import json
+import pprint
 
-def handle_request(response, i):
+i = 0
+
+def handle_request(response):
     if response.code == 200:
         keywords.append(url_dict[response.effective_url.lower()])
-    thread_count[i] -= 1
-    if thread_count[i] == 0:
+    global i
+    i -= 1
+    if i <= 0:
         ioloop.IOLoop.instance().stop()
 
 # parse command line arguments
@@ -39,10 +44,9 @@ while len(keywords) < args.num_keywords:
         url_dict[url] = (phrase, freq)
 
     http_client = httpclient.AsyncHTTPClient()
-    thread_count.append(0)
     for url in urls:
-        thread_count[batch_num] += 1
-        http_client.fetch(url.strip(), handle_request(batch_num), method='HEAD')
+        i += 1
+        http_client.fetch(url.strip(), handle_request, method='HEAD')
     
     ioloop.IOLoop.instance().start()
     
@@ -53,7 +57,8 @@ while len(keywords) < args.num_keywords:
 keywords.sort(key=lambda entry: entry[1], reverse=True)  # sort by descending relevance
 keywords = keywords[:args.num_keywords]  # we may have added more than we needed due to batching. Keep only how many we wanted
 
-print([entry[0] for entry in keywords])
+for phrase in keywords:
+    print(phrase[0])
 
 # RAKE - https://github.com/fabianvf/python-rake
 

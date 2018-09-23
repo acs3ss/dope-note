@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 import RAKE
 from tornado import ioloop, httpclient
 
+
 def download_subtitles(video):
     ''' @param video: YouTube url
         @return: XML of subtitle transcript
@@ -104,48 +105,53 @@ def get_keywords(filename, num_keywords, stoplist):
         @param stoplist: path to stoplist of common words to be excluded
         @return: list of (keyword, relevance) sorted by descreasing relevance
     '''
-    data = filename
-
     Rake = RAKE.Rake(stoplist)  # use a stoplist to exclude common words
-    out = Rake.run(data, minFrequency=2)  # use RAKE library to find relevant key phrases
+    out = Rake.run(filename, minFrequency=2)  # use RAKE library to find relevant key phrases
 
     url_dict = {}  # dictionary to match url -> (phrases, relevance)
 
     keywords = []
-    for phrase, relevance in out:
+    for phrase, freq in out:
         if len(keywords) >= num_keywords:
             break
 
         urlified = re.sub(" ", "_", phrase)
-        url = "https://en.wikipedia.org/wiki/" + urlified  # convert to Wikipedia url
-        url_dict[url] = (phrase, relevance)  # add to dict to allow phrase to later be identified by URL
-        request = requests.get(url)
-        if request.status_code == 200:
-            keywords.append((phrase, relevance))
+        url = "https://en.wikipedia.org/wiki/" + urlified
+        url_dict[url] = (phrase, freq)
+        req = requests.get(url)
+        if req.status_code == "200":
+            keywords.append(url_dict[url])
 
     keywords.sort(key=lambda entry: entry[1], reverse=True)  # sort by descending relevance
     keywords = keywords[:num_keywords]  # we may have added more than we needed due to batching. Keep only how many we wanted
+    
+    return [phrase[0] for phrase in keywords]
 
-    return keywords
 
-
-def get_resources(phrase, urls):
+def get_resources(phrase):
     ''' @param phrase: phrase to be searched for
         @param urls: websites to search for the phrase
         @return: json objects from top ddgr search results
     '''
     related_links = []
-    for url in urls:
-        bash_command = "ddgr -r 'us-en' --json -n 1 -w " + url + ' "' + phrase + '"'
-        # bash_command = "googler -l 'en' --json -n 1 -w " + url + ' "' + phrase + '"'
-        print(bash_command)
-        process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-        related_links.append(output)
-    return related_links
+    added = re.sub(r" ", "+", phrase)
+    anded = re.sub(r" ", "&20", phrase)
+
+    related_links.append("https://en.wikipedia.org/w/index.php?search=" + added + "&title=Special%3ASearch&go=Go")
+    related_links.append("https://www.youtube.com/results?search_query=" + added)
+    related_links.append("https://www.khanacademy.org/search?referer=%2F&page_search_query=" + added)
+    related_links.append("https://www.merriam-webster.com/dictionary/" + anded)
+    related_links.append("https://stackexchange.com/search?q=" + added)
+
+    true_links = []
+    for link in related_links:
+        request = requests.get(link)
+        if request.status_code == 200:
+            true_links.append(link)
+    return {phrase: true_links}
 
 
-def get_video_info(url, num_keywords=5, stoplist="SmartStopList.txt", resources="resources.txt"):
+def get_video_info(url, num_keywords=3, stoplist="SmartStopList.txt", resources="resources.txt"):
     dependencies = [
         'you-get>=0.4.1099',
         'python-rake>=1.4.5'
@@ -169,7 +175,7 @@ def get_video_info(url, num_keywords=5, stoplist="SmartStopList.txt", resources=
     transcript = parse_xml(xml_filename)
     keywords = get_keywords(transcript, num_keywords, stoplist)
 
-    links = [get_resources(phrase[0], wanted_resources) for phrase in keywords]
+    links = {'phrases': [get_resources(phrase, urls) for phrase in keywords]}
 
     os.remove(xml_filename)
 
