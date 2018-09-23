@@ -2,7 +2,15 @@
 
 {% block body %}
 <div class="container">
-    <h1>{{ url }}</h1>
-    <p>You submitted a URL!</p>
+    <h1>{{ video.title }}</h1>
+    <h2> Key Phrases </h2>
+    <ul>
+        {% for phrase in phrases %}
+          <li>{{ phrase }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2> Transcription </h2>
+    <p> {{ video.transcription }} </p>
 </div>
 {% endblock %}

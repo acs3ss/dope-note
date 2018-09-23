@@ -35,7 +35,7 @@ def index(request):
 
 def video_detail_view(request, pk=None):
     obj = get_object_or_404(Video, pk=pk)
-    args = {'url': obj}
+    args = {'video': obj, "phrases": obj.keywords[1:-1].strip().split(',')}
     return render(request, 'detail_view.html', args)
 
 
