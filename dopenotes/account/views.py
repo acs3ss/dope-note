@@ -19,7 +19,11 @@ def signup(request):
         return render(request, 'signup.html', args)
 
 def view_profile(request):
-    args = {'user': request.user}
+    user = request.user
+    my_classes = [user.userprofile.videos]
+    args = {'user': user,
+            'my_classes': my_classes,
+            }
     return render(request, 'profile.html', args)
 
 def edit_profile(request):

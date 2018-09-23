@@ -4,7 +4,7 @@ from .models import *
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'name','is_admin')
+    list_display = ('user', 'name','videos', 'is_admin')
 
     def name(self, obj):
         return str(obj.user.first_name) + " " + str(obj.user.last_name)
