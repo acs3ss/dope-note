@@ -20,4 +20,4 @@ class UserProfile(models.Model):
 class Class(models.Model):
     name = models.CharField(max_length=128)
     students = models.ForeignKey(User, on_delete=models.DO_NOTHING)
->>>>>>> 46b4bd517bfcff19d324ef14f69b0a8802d735d8
+

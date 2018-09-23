@@ -4,14 +4,15 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+	atomic = False
 
-    dependencies = [
-        ('upload', '0001_initial'),
-    ]
+	dependencies = [
+		('upload', '0001_initial'),
+	]
 
-    operations = [
-        migrations.RenameModel(
-            old_name='Videos',
-            new_name='Video',
-        ),
-    ]
+	operations = [
+		migrations.RenameModel(
+			old_name='Videos',
+			new_name='Video',
+		),
+	]
