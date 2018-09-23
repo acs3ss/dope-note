@@ -4,6 +4,7 @@
 <div class="container">
     <h1>Add Lecture Link</h1>
     <h2>Paste the link to your video lecture here.</h2>
+    <br/>
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
