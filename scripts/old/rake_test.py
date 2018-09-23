@@ -3,12 +3,11 @@ import re
 from tornado import ioloop, httpclient
 import argparse
 
-def handle_request(response):
+def handle_request(response, i):
     if response.code == 200:
         keywords.append(url_dict[response.effective_url.lower()])
-    global i
-    i -= 1
-    if i == 0:
+    thread_count[i] -= 1
+    if thread_count[i] == 0:
         ioloop.IOLoop.instance().stop()
 
 # parse command line arguments
@@ -31,7 +30,6 @@ keywords = []
 urls = []
 batch_num = 0
 batch_size = args.num_keywords * 2 
-i = 0
 
 while len(keywords) < args.num_keywords:
     for phrase, freq in out[batch_size*batch_num:batch_size*(batch_num+1)]:
@@ -41,9 +39,10 @@ while len(keywords) < args.num_keywords:
         url_dict[url] = (phrase, freq)
 
     http_client = httpclient.AsyncHTTPClient()
+    thread_count.append(0)
     for url in urls:
-        i += 1
-        http_client.fetch(url.strip(), handle_request, method='HEAD')
+        thread_count[batch_num] += 1
+        http_client.fetch(url.strip(), handle_request(batch_num), method='HEAD')
     
     ioloop.IOLoop.instance().start()
     

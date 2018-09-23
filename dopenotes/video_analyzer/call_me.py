@@ -13,8 +13,6 @@ import xml.etree.ElementTree as ET
 import RAKE
 from tornado import ioloop, httpclient
 
-thread_count = []
-
 def download_subtitles(video):
     ''' @param video: YouTube url
         @return: XML of subtitle transcript
@@ -106,25 +104,6 @@ def get_keywords(filename, num_keywords, stoplist):
         @param stoplist: path to stoplist of common words to be excluded
         @return: list of (keyword, relevance) sorted by descreasing relevance
     '''
-    def handle_request(response, i):
-        if response.code == 200:  # if valid url, append to keywords list
-            keywords.append(url_dict[response.effective_url.lower()])
-        thread_count[i] -= 1
-        if thread_count[i] == 0:
-            ioloop.IOLoop.instance().stop()  # once all threads are done, stop the instance
-
-    def worker(ws, loop):
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(ws.start())
-
-    if __name__ == '__main__':
-        ws = Server()
-        loop = asyncio.new_event_loop()
-        p = threading.Thread(target=worker, args=(ws, loop,))
-        p.start()
-
-#    with open(filename) as f:
-#        data = f.read()
     data = filename
 
     Rake = RAKE.Rake(stoplist)  # use a stoplist to exclude common words
@@ -133,26 +112,16 @@ def get_keywords(filename, num_keywords, stoplist):
     url_dict = {}  # dictionary to match url -> (phrases, relevance)
 
     keywords = []
-    urls = []
-    batch_num = 0
-    batch_size = num_keywords * 2  # number of threads sent out at once
-    while len(keywords) < num_keywords:
-        for phrase, relevance in out[batch_size*batch_num:batch_size*(batch_num+1)]:
-            urlified = re.sub(" ", "_", phrase)
-            url = "https://en.wikipedia.org/wiki/" + urlified  # convert to Wikipedia url
-            urls.append(url)
-            url_dict[url] = (phrase, relevance)  # add to dict to allow phrase to later be identified by URL
+    for phrase, relevance in out:
+        if len(keywords) >= num_keywords:
+            break
 
-        http_client = httpclient.AsyncHTTPClient()
-        thread_count.append(0)
-        for url in urls:
-            thread_count[batch_num] += 1
-            http_client.fetch(url.strip(), handle_request(batch_num), method='HEAD')  # check if Wikipedia page exists for phrase
-
-        ioloop.IOLoop.instance().start()
-
-        batch_num += 1
-        urls = []
+        urlified = re.sub(" ", "_", phrase)
+        url = "https://en.wikipedia.org/wiki/" + urlified  # convert to Wikipedia url
+        url_dict[url] = (phrase, relevance)  # add to dict to allow phrase to later be identified by URL
+        request = requests.get('http://www.example.com')
+        if request.status_code == 200:
+            keywords.append((phrase, relevance))
 
     keywords.sort(key=lambda entry: entry[1], reverse=True)  # sort by descending relevance
     keywords = keywords[:num_keywords]  # we may have added more than we needed due to batching. Keep only how many we wanted
