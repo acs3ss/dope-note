@@ -1,0 +1,10 @@
+
+.box__dragndrop,
+.box__uploading,
+.box__success,
+.box__error {
+  display: none;
+}
+.btn-sm {
+	margin: .5em;
+}
