@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'account.apps.AccountConfig',
     'upload.apps.UploadConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -115,7 +116,32 @@ USE_L10N = True
 USE_TZ = True
 
 
+# URLs
+
+LOGOUT_URL = '/account/logout/'
+
+LOGIN_URL = '/account/login/'
+
+LOGIN_REDIRECT_URL = '/account/profile/'
+
+HOME_URL = '/home/'
+
+LOGIN_EXEMPT_URLS = (
+    r'^account/login/$',
+    r'^account/logout/$',
+    r'^account/signup/$',
+    r'^account/reset_password/$',
+    r'^account/reset_password/done/$',
+    r'^account/reset_password/complete/$',
+    r'^account/reset_password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    r'^home/',
+)
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'dopenotes/media')
