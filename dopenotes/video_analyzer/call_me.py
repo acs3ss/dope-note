@@ -136,7 +136,8 @@ def get_resources(phrase, urls):
     '''
     related_links = []
     for url in urls:
-        bash_command = "ddgr -r 'us-en' --json -n 1 -w " + url + ' "' + phrase + '"'
+        # bash_command = "ddgr -r 'us-en' --json -n 1 -w " + url + ' "' + phrase + '"'
+        bash_command = "googler -l 'en' --json -n 1 -w " + url + ' "' + phrase + '"'
         print(bash_command)
         process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
         output, error = process.communicate()
